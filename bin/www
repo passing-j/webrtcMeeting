@@ -1,0 +1,122 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('test:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+var SkyRTC = require('skyrtc').listen(server);//调用skyrtc包监听http服务器
+SkyRTC.rtc.on('new_connect', function(socket) {
+  console.log('创建新连接');
+});
+
+SkyRTC.rtc.on('remove_peer', function(socketId) {
+  console.log(socketId + "用户离开");
+});
+
+SkyRTC.rtc.on('new_peer', function(socket, room) {
+  console.log("新用户" + socket.id + "加入房间" + room);
+});
+
+SkyRTC.rtc.on('socket_message', function(socket, msg) {
+  console.log("接收到来自" + socket.id + "的新消息：" + msg);
+});
+
+SkyRTC.rtc.on('ice_candidate', function(socket, ice_candidate) {
+  console.log("接收到来自" + socket.id + "的ICE Candidate");
+});
+
+SkyRTC.rtc.on('offer', function(socket, offer) {
+  console.log("接收到来自" + socket.id + "的Offer");
+});
+
+SkyRTC.rtc.on('answer', function(socket, answer) {
+  console.log("接收到来自" + socket.id + "的Answer");
+});
+
+SkyRTC.rtc.on('error', function(error) {
+  console.log("发生错误：" + error.message);
+});
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

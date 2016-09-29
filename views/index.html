@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style type="text/css">
+    #wrap{
+      width: 80%;
+      height: 30%;
+      margin: 20% auto;
+    }
+    h1,p{
+      text-align: center;
+    }
+    h1{
+      font-size: 8em;
+    }
+    a {
+        margin-left: 20px;
+        text-decoration: none;
+        margin-left: 2%;
+        font-size: 6em;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <h1><%= title %></h1>
+        
+        <p><a href="/login">登录 </a>
+            <a href="/register">注册</a>
+        </p>
+    </div>
+</body>
+
+</html>
