@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../stylesheets/bootstrap-responsive.css">
+    <style>
+    body {
+        width: 50%;
+        margin: 0 auto;
+    }   
+    h1 {
+        font-size: 60px;
+        color: #2C2020;
+        width: 100%;
+        text-align: center;
+    }    
+    div {
+        margin: 40px auto;
+        width: 100;
+    }   
+    p {
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        font-size: 40px;
+        padding-left: 10px;
+        background: #D8DFDE;
+        color: #352B2B;
+        margin-top: 10px;
+    }   
+    #b {
+        width: 100%;
+        text-align: center;
+        font-size: 60px;
+        margin: 40px auto;
+        padding: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <h1><%= title %></h1>
+    <div>
+        <% for(i=0; i< reco.length; i++) {%>
+            <p>
+                <%= reco[i].reco %>
+            </p>
+            <% } %>
+    </div>
+    <a href="/home"><button id="b" type="button" class="btn btn-primary">返回首页</button></a>
+</body>
+
+</html>

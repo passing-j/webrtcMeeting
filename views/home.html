@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style type="text/css">
+    #wrap {
+        width: 80%;
+        height: 30%;
+        margin: 20% auto;
+    }    
+    h1,
+    p {
+        text-align: center;
+    }   
+    h1 {
+        font-size: 8em;
+    }
+    p {
+        margin-top: 8%;
+    }    
+    a {
+        background-color: #2673DB;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        padding: 10px;
+        margin-left: 2%;
+        font-size: 6em;
+    }    
+    a:hover {
+        text-decoration: none;
+    }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <h1><%= title %></h1>
+        <p><a id="video" href="/meetingroom">视频会议 </a></p>
+        <p><a id="record" href="/recording">会议记录 </a></p>
+        <p><a id="out" href="/logout">我要注销 </a></p>
+    </div>
+</body>
+
+</html>

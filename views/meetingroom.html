@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会议室</title>
+    <title>
+        <%= title %>
+    </title>
     <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="../stylesheets/bootstrap-responsive.css">
     <style type="text/css">
@@ -77,18 +79,21 @@
     #chat .msgs {
         padding: 5%;
     }
-    #videos .btn{
-            position: absolute;
-            top: 1%;
-            right: 1%;
-            font-size: 16px;
-        }
-    #chat .msgs .btn{
-            position: absolute;
-            top: 1%;
-            right: 1%;
-            font-size: 16px;
-        }
+    
+    #videos .btn {
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        font-size: 16px;
+    }
+    
+    #chat .msgs .btn {
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        font-size: 16px;
+    }
+    
     #chat .msgs p {
         margin: 0.3em 0;
     }
@@ -99,7 +104,6 @@
         margin-right: 0;
         height: 3%;
         width: 20%;
-
     }
     
     #files .name {}
@@ -144,8 +148,8 @@
             margin-bottom: 0;
             width: 65%;
         }
-        #chat .fileIpt{
-            margin-bottom:5px;
+        #chat .fileIpt {
+            margin-bottom: 5px;
         }
         #chat .sendBtn,
         #chat .sendFileBtn {
@@ -158,8 +162,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        #chat .sendFileBtn{
-            margin-bottom:5px;
+        #chat .sendFileBtn {
+            margin-bottom: 5px;
         }
         #chat .msgIpt,
         #chat .sendBtn {
@@ -172,15 +176,14 @@
         }
         #chat .msgs {
             padding: 5%;
-        
         }
-        #videos .btn{
+        #videos .btn {
             position: absolute;
             top: 1%;
             right: 1%;
             font-size: 14px;
         }
-        #chat .msgs .btn{
+        #chat .msgs .btn {
             position: absolute;
             top: 1%;
             right: 1%;
@@ -203,20 +206,20 @@
             text-decoration: none
         }
     }
-    
     </style>
 </head>
 
-<body> 
+<body>
     <div id="videos">
-        <a href="/logout"><input type="button" id="close" class="close btn btn-danger" value="结束会议"></a>
-        
-        
+        <a href="/home">
+            <input type="button" id="close" class="close btn btn-danger" value="结束会议">
+        </a>
+        <!-- <input type="button" id="close" class="close btn btn-danger" value="结束会议"> -->
         <video id="me" autoplay></video>
     </div>
     <div id="chat">
         <div class="msgs" id="msgs">
-            <a href="recording.html"><input type="button" id="meetingNote" class="meetingNote btn btn-info" value="会议记录" onclick="window.location.href('recording.html')"></a>
+            <!-- <a href="recording.html"><input type="button" id="meetingNote" class="meetingNote btn btn-info" value="会议记录" onclick="window.location.href('recording.html')"></a> -->
         </div>
         <input type="file" id="fileIpt" class="fileIpt">
         <button type="button" id="sendFileBtn" class="sendFileBtn btn-info">发送文件</button>
@@ -224,12 +227,11 @@
         <button id="sendBtn" class="sendBtn btn-info">发送</button>
     </div>
     <div id="files"></div>
-    
 </body>
 <script src="../javascripts/jquery.min.js"></script>
 <script src="../javascripts/bootstrap.min.js"></script>
 <script type="text/javascript" src="../SkyRTC-client.js"></script>
-<script type="text/javascript">
+<script>
 var videos = document.getElementById("videos");
 var sendBtn = document.getElementById("sendBtn");
 var msgs = document.getElementById("msgs");
@@ -358,6 +360,37 @@ rtc.on('data_channel_message', function(channel, socketId, message) {
 });
 //连接WebSocket服务器
 rtc.connect("ws:" + window.location.href.substring(window.location.protocol.length).split('#')[0], window.location.hash.slice(1));
+
+//获取时间
+$(function() {
+    $("#close").click(function(db,callback) {
+        function reline(x){
+            if(x<10){
+                x='0'+x;
+            }
+            return x;
+        };
+        var t = new Date,
+            rtime = t.getFullYear() + '.' + reline((t.getMonth() + 1)) + '.' + reline(t.getDate()) + ' ' +
+            reline(t.getHours()) + ':' + reline(t.getMinutes()) + ':' + reline(t.getSeconds());
+        var data = {
+            "rtime": rtime
+        };
+        $.ajax({
+                    url: '/meetingroom',
+                    type: 'post',
+                    data: data,
+                    success: function(data, status) {
+                        if (status == 'success') {
+                            location.href = 'home';
+                        }
+                    },
+                    error: function(data, err) {
+                        location.href = 'home';
+                    }
+                });
+    });
+});
 </script>
 
 </html>
